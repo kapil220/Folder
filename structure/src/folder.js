@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import File from './file';
 
-const Folder = ({ name, children, depth, onAddItem, onDeleteItem }) => {
+const Folder = ({ name, children, depth, onAddItem, onDeleteItem, onEditItem }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleFolder = () => {
     setIsOpen(prevState => !prevState);
+  };
+
+  const handleEdit = () => {
+    onEditItem(name, name, 'folder');
   };
 
   return (
@@ -16,6 +20,8 @@ const Folder = ({ name, children, depth, onAddItem, onDeleteItem }) => {
         </span>
         <button onClick={() => onAddItem(name, 'folder')}>+ Add Folder</button>
         <button onClick={() => onAddItem(name, 'file')}>+ Add File</button>
+        <button onClick={handleEdit}>Edit Folder</button>
+        <button onClick={() => onDeleteItem(name)}>Delete Folder</button>
       </div>
       {isOpen && (
         <div>
@@ -23,7 +29,11 @@ const Folder = ({ name, children, depth, onAddItem, onDeleteItem }) => {
             ? children.map((child, index) => (
                 <div key={index}>
                   {typeof child === 'string' ? (
-                    <File name={child} onDeleteItem={onDeleteItem} />
+                    <File
+                      name={child}
+                      onEdit={() => onEditItem(name, child, 'file')}
+                      onDelete={() => onDeleteItem(child)}
+                    />
                   ) : (
                     <Folder
                       name={child.name}
@@ -31,6 +41,7 @@ const Folder = ({ name, children, depth, onAddItem, onDeleteItem }) => {
                       depth={depth + 1}
                       onAddItem={onAddItem}
                       onDeleteItem={onDeleteItem}
+                      onEditItem={onEditItem}
                     />
                   )}
                 </div>

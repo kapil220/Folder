@@ -1,7 +1,7 @@
 import React from 'react';
 import Folder from './folder';
 
-const FolderStructure = ({ data, addItem, deleteItem }) => {
+const FolderStructure = ({ data, addItem, deleteItem, editItem }) => {
   const renderFolders = (folderData, depth = 0) => {
     return Object.entries(folderData).map(([folderName, folderContent], index) => (
       <Folder
@@ -16,6 +16,7 @@ const FolderStructure = ({ data, addItem, deleteItem }) => {
         depth={depth}
         onAddItem={addItem}
         onDeleteItem={deleteItem}
+        onEditItem={editItem}
       />
     ));
   };

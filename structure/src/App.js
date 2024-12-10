@@ -11,13 +11,11 @@ const App = () => {
     Applications: ['Webstorm.dmg', 'Pycharm.dmg', 'FileZilla.dmg', 'Mattermost.dmg', 'chromedriver.dmg'],
   });
 
-  // Function to add a folder or file
   const addItem = (parent, type) => {
     const newItem = prompt(`Enter new ${type} name:`);
     if (!newItem) return;
 
     const newData = { ...data };
-
     if (type === 'file') {
       if (Array.isArray(newData[parent])) {
         newData[parent].push(newItem);
@@ -35,7 +33,6 @@ const App = () => {
     setData(newData);
   };
 
-  // Function to delete a file or folder
   const deleteItem = (item) => {
     const newData = { ...data };
     const deleteRecursively = (data, key) => {
@@ -55,12 +52,35 @@ const App = () => {
     setData(newData);
   };
 
+  const editItem = (parent, item, type) => {
+    const newName = prompt(`Enter new ${type} name:`, item);
+    if (!newName) return;
+
+    const newData = { ...data };
+    if (type === 'file') {
+      if (Array.isArray(newData[parent])) {
+        const index = newData[parent].indexOf(item);
+        newData[parent][index] = newName;
+      }
+    } else if (type === 'folder') {
+      if (typeof newData[parent] === 'object') {
+        const index = newData[parent].findIndex(folder => folder.name === item);
+        newData[parent][index].name = newName;
+      } else {
+        newData[parent] = { name: newName, children: [] };
+      }
+    }
+
+    setData(newData);
+  };
+
   return (
     <div>
-      <FolderStructure 
-        data={data} 
-        addItem={addItem} 
-        deleteItem={deleteItem} 
+      <FolderStructure
+        data={data}
+        addItem={addItem}
+        deleteItem={deleteItem}
+        editItem={editItem}
       />
     </div>
   );

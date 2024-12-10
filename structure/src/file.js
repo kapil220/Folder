@@ -1,10 +1,11 @@
 import React from 'react';
 
-const File = ({ name, onDeleteItem }) => {
+const File = ({ name, onEdit, onDelete }) => {
   return (
     <div>
       <span>{name}</span>
-      <button onClick={() => onDeleteItem(name)}>Delete File</button>
+      <button onClick={onEdit}>Edit File</button>
+      <button onClick={onDelete}>Delete File</button>
     </div>
   );
 };
